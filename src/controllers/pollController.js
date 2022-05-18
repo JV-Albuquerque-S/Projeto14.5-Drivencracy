@@ -12,12 +12,12 @@ export async function postPolls(req, res){
             poll.expireAt !== "" ? 
                 await db.collection("polls").insertOne({
                     title: poll.title,
-                    expireAt: dayjs(poll.expireAt).format('YYYY/MM/DD hh:mm').toString()
+                    expireAt: dayjs(poll.expireAt).format('YYYY/MM/DD HH:mm').toString()
                 })
                 :
                 await db.collection("polls").insertOne({
                     title: poll.title,
-                    expireAt: dayjs().add(30, "day").format('YYYY/MM/DD hh:mm').toString()
+                    expireAt: dayjs().add(30, "day").format('YYYY/MM/DD HH:mm').toString()
                 })
             res.sendStatus(201);
             //console.log(dayjs(poll.expireAt).format('YYYY/MM/DD hh:mm').toString());
