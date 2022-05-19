@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import dayjs from "dayjs";
 
-import { ConnectionClosedEvent, ObjectId } from "mongodb";
+import { ObjectId } from "mongodb";
 
 import db from "./../db.js";
 
