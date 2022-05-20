@@ -10,35 +10,12 @@ dotenv.config();
 export async function postChoices(req, res){
     const choice = req.body;
     try {
-        if(choice.title){
-            const findPoll = await db.collection("polls").findOne({_id: ObjectId(choice.poolId)});
-            if(findPoll){
-                const alreadyExist = await db.collection("choices").findOne({title: choice.title});
-                if(!alreadyExist){
-                    const expireDate = dayjs(findPoll.expireAt);
-                    if(expireDate.diff(dayjs()) > 0){
-                        await db.collection("choices").insertOne({title: choice.title, poolId: choice.poolId});
-                        res.sendStatus(201);
-                    }
-                    else{
-                        res.sendStatus(403);
-                    }
-                }
-                else{
-                    res.sendStatus(409);
-                }
-            }
-            else{
-                res.sendStatus(404);
-            }
-        }
-        else{
-            res.sendStatus(422);
-        }
+        await db.collection("choices").insertOne({title: choice.title, poolId: choice.poolId});
+        res.sendStatus(201);
     }
+
     catch(error){
-        console.log(`Error => ${error}`);
-        res.sendStatus(404);
+        console.log(error);
     }
 }
 
