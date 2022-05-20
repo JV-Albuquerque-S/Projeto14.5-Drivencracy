@@ -13,15 +13,15 @@ export async function postChoices(req, res){
         if(choice.title){
             const findPoll = await db.collection("polls").findOne({_id: ObjectId(choice.poolId)});
             if(findPoll){
-                const alreadyExist = await db.collection("choices").findOne({"choice.title": `${choice.title}`});
+                const alreadyExist = await db.collection("choices").findOne({title: choice.title});
                 if(!alreadyExist){
                     //const alreadyExpired = await db.collection("polls").findOne({});
                     const expireDate = dayjs(findPoll.expireAt);
                     if(expireDate.diff(dayjs()) > 0){
-                        await db.collection("choices").insertOne({choice});
-                        console.log(await db.collection("choices").find({}).toArray());
-                        console.log(choice.title);
-                        console.log(await db.collection("choices").findOne({title: choice.title}));
+                        await db.collection("choices").insertOne({title: choice.title, poolId: choice.poolId});
+                        //console.log(await db.collection("choices").find({}).toArray());
+                        //console.log(choice.title);
+                        //console.log(await db.collection("choices").findOne({title: choice.title}));
                         res.sendStatus(201);
                     }
                     else{
@@ -43,5 +43,24 @@ export async function postChoices(req, res){
     catch(error){
         console.log(`Error => ${error}`);
         res.sendStatus(404);
+    }
+}
+
+export async function getChoices(req, res){
+    const id = req.params.id;
+
+    try{
+        const choices = await db.collection("choices").find({poolId: id}).toArray();
+        if(choices.length !== 0){
+            console.log(choices)
+            res.send(choices).status(200);
+        }
+        else{
+            res.sendStatus(404);
+        }
+    }
+    catch(error){
+        console.log(error);
+        res.sendStatus(500);
     }
 }
