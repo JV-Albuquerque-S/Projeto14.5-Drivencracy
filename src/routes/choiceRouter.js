@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { postChoices } from "./../controllers/choiceController.js";
 import { getChoices } from "./../controllers/choiceController.js";
+//import { choiceValidation } from "../middlewares/choiceValidation.js";
 
 const choiceRouter = Router();
 

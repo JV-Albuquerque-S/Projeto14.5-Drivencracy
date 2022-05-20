@@ -43,17 +43,7 @@ export async function getResult(req, res){
         let count = [];
         let winnerChoice;
         const poll = await db.collection("polls").findOne({_id: ObjectId(id)});
-        console.log(`poll: ${poll._id}, id: ${id}`)
-
         const choices = await db.collection("choices").find({poolId: poll._id.toString()}).toArray();
-        console.log(`choices: ${choices}`);
-        /*choices.map(choice => {
-            let compare = await db.collection("votes").find({choiceId: choice._id}).toArray();
-            if(compare.length > count.length){
-                count = compare;
-                winnerChoice = choice;
-            }
-        });*/
         for(let i=0; i<choices.length; i++){
             let compare = await db.collection("votes").find({choiceId: choices[i]._id}).toArray();
             if(compare.length > count.length){

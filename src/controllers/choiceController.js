@@ -15,13 +15,9 @@ export async function postChoices(req, res){
             if(findPoll){
                 const alreadyExist = await db.collection("choices").findOne({title: choice.title});
                 if(!alreadyExist){
-                    //const alreadyExpired = await db.collection("polls").findOne({});
                     const expireDate = dayjs(findPoll.expireAt);
                     if(expireDate.diff(dayjs()) > 0){
                         await db.collection("choices").insertOne({title: choice.title, poolId: choice.poolId});
-                        //console.log(await db.collection("choices").find({}).toArray());
-                        //console.log(choice.title);
-                        //console.log(await db.collection("choices").findOne({title: choice.title}));
                         res.sendStatus(201);
                     }
                     else{
