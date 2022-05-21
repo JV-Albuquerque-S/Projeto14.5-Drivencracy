@@ -29,6 +29,7 @@ export async function choiceValidation(req, res, next){
     }
     catch(error){
         res.sendStatus(404);
+        return;
     }
     next();
 }

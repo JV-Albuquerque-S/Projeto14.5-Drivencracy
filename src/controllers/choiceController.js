@@ -25,7 +25,6 @@ export async function getChoices(req, res){
     try{
         const choices = await db.collection("choices").find({poolId: id}).toArray();
         if(choices.length !== 0){
-            console.log(choices)
             res.send(choices).status(200);
         }
         else{
